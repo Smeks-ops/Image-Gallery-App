@@ -11,23 +11,35 @@ app.use(json())
 
 const { parsed: config } = dotenv.config();
 
-const BASE_URL = `https://api.cloudinary.com/v1_1/${config.CLOUD_NAME}/resources/image`
+const BASE_URL = `https://api.cloudinary.com/v1_1/${config.CLOUD_NAME}`
 
 const auth = {
   username: config.API_KEY,
   password: config.API_SECRET,
 }
 
+//photos loading and load more
 app.get('/photos', async (req, res) => {
-const response = await axios.get(BASE_URL, {
-  auth,
-  params: {
-    next_cursor: req.query.next_cursor
-  }
-})
-
+  const response = await axios.get(BASE_URL + '/resources/image', {
+    auth,
+    params: {
+      next_cursor: req.query.next_cursor
+    },
+  });
   return res.send(response.data)
-})
+});
+
+//search endpoint
+app.get('/search', async (req, res) => {
+  const response = await axios.get(BASE_URL + '/resources/search', {
+    auth,
+    params: {
+      expression: req.query.expression
+    },
+  });
+  return res.send(response.data)
+});
+
 
 const PORT = 7000
 
