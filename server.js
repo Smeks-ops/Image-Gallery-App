@@ -19,6 +19,9 @@ const auth = {
 }
 
 //photos loading and load more
+app.get("/", (req, res) => res.status(200).send(`frontend at https://github.com/Smeks-ops/Image-Gallery`))
+
+
 app.get('/photos', async (req, res) => {
   const response = await axios.get(BASE_URL + '/resources/image', {
     auth,
